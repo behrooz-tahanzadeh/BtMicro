@@ -74,15 +74,9 @@ void BtStepper::init()
 BtStepper& BtStepper::operator++()
 {
 	if(!reverse)
-	{
 		stepNumber++;
-	}
 	else
-	{
 		stepNumber--;
-	}
-	
-	stepNumber %= 4;
 	
 	step();
 	
@@ -104,18 +98,9 @@ BtStepper BtStepper::operator++(int)
 BtStepper& BtStepper::operator--()
 {
 	if(!reverse)
-	{
 		stepNumber--;
-	}
 	else
-	{
 		stepNumber++;
-	}
-	
-	if(stepNumber<0)
-		stepNumber = 3;
-	
-	stepNumber %= 4;
 	
 	step();
 	
@@ -137,16 +122,21 @@ BtStepper BtStepper::operator--(int)
 
 void BtStepper::step()
 {
+	int s = stepNumber%4;
+	
+	if(s<0)
+		s += 4;
+
 	if (pinCount == 2)
 	{
-		digitalWrite(pin1, steps[stepNumber][1]);
-		digitalWrite(pin2, steps[stepNumber][2]);
+		digitalWrite(pin1, steps[s][1]);
+		digitalWrite(pin2, steps[s][2]);
 	}
 	else if (pinCount == 4)
 	{
-		digitalWrite(pin1, steps[stepNumber][0]);
-		digitalWrite(pin2, steps[stepNumber][1]);
-		digitalWrite(pin3, steps[stepNumber][2]);
-		digitalWrite(pin4, steps[stepNumber][3]);
+		digitalWrite(pin1, steps[s][0]);
+		digitalWrite(pin2, steps[s][1]);
+		digitalWrite(pin3, steps[s][2]);
+		digitalWrite(pin4, steps[s][3]);
 	}
 }

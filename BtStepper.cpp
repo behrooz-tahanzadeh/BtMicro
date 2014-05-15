@@ -43,6 +43,8 @@ BtStepper::BtStepper(int p1, int p2, int p3, int p4)
 
 void BtStepper::init()
 {
+	reverse = false;
+
 	steps[0][0] = HIGH;
 	steps[0][1] = LOW;
 	steps[0][2] = HIGH;
@@ -71,25 +73,44 @@ void BtStepper::init()
 
 BtStepper& BtStepper::operator++()
 {
-	stepNumber++;
+	if(!reverse)
+	{
+		stepNumber++;
+	}
+	else
+	{
+		stepNumber--;
+	}
+	
 	stepNumber %= 4;
 	
 	step();
 	
 	return *this;
 }
+
+
+
+
 BtStepper BtStepper::operator++(int)
 {
 	BtStepper tmp(*this);
-    operator++();
-    return tmp;
+  operator++();
+  return tmp;
 }
 
 
 
 BtStepper& BtStepper::operator--()
 {
-	stepNumber--;
+	if(!reverse)
+	{
+		stepNumber--;
+	}
+	else
+	{
+		stepNumber++;
+	}
 	
 	if(stepNumber<0)
 		stepNumber = 3;
@@ -100,11 +121,15 @@ BtStepper& BtStepper::operator--()
 	
 	return *this;
 }
+
+
+
+
 BtStepper BtStepper::operator--(int)
 {
 	BtStepper tmp(*this);
-    operator--();
-    return tmp;
+  operator--();
+  return tmp;
 }
 
 

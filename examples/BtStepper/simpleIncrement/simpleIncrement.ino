@@ -4,14 +4,29 @@ BtStepper motor(4,5,6,7);
 
 void setup()
 {
-  
+  //change it to false/true if you want to change rotation direction
+  motor.reverse = true;
+
+  Serial.begin(9600); 
+	
+	//wait until serial port open
+  while (!Serial);
 }
 void loop() 
 {
-  for(int i=0; i<400; i++)
+  if(Serial.available())
   {
-      motor++;
-      
-      delay(10);
+    int steps = Serial.parseInt();
+
+    for(int i=0; i<abs(steps); i++)
+    {
+      if(steps<0)
+        motor--;
+      else
+        motor++;
+
+      //change delay time to get various stepper speeds
+      delay(5);
+    }
   }
 }
